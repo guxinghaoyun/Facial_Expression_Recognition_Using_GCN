@@ -1,9 +1,15 @@
 # Facial_Expression_Recognition_GCN
 
 Highlights: 
+
 (1) This model is very light, only 4 convolutional layers and 2 FC layers (including the FC for softmax loss).
+
 (2) Recognition accuracy (pretrained on AffectNet database): 73.36 at FER2013 (privated test), 88.91 at FERPlus (privated test), 88.92 at RAF-DB.
+
 (3) Very speed (9.0 s per epoch for training on RAF-DB) and lowest resoure requirments.
+
+
+Note that:
 
 Requires setup the package for Gabor Convolutional networks https://github.com/jxgu1016/Gabor_CNN_PyTorch
 
