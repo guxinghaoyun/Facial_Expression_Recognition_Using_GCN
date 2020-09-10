@@ -41,13 +41,8 @@ parser.add_argument('--pretrained', default='', type=str, metavar='PATH',
                     help='path to pretrained checkpoint (default: none)')
 parser.add_argument('--gpu', default=0, type=int,
                     metavar='N', help='GPU device ID (default: -1)')
-parser.add_argument('--dataset_dir', default='./mnist', type=str, metavar='PATH',
-                    help='path to dataset (default: ../MNIST)')
 parser.add_argument('--comment', default='', type=str, metavar='INFO',
-                    help='Extra description for tensorboard')
-parser.add_argument('--model', default='VGG13', type=str, metavar='NETWORK',
-                    help='Network to train')
-                    
+                    help='Extra description for tensorboard')                    
 parser.add_argument('--dset', default=1, type=int,
                     metavar='N', help='Choice dataset 1 = RAF, 2 = FER2013 (default: 1)')
 args = parser.parse_args()
@@ -137,7 +132,7 @@ def train(epoch):
     model.train()
     global iteration
     st = time.time()
-    for batch_idx, (data, target, idx) in enumerate(train_loader):        
+    for batch_idx, (data, target) in enumerate(train_loader):        
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()       
        
@@ -162,7 +157,7 @@ def test(epoch):
     test_loss = AverageMeter()
     acc = AverageMeter()
     with torch.no_grad():
-        for data, target, idx in test_loader:
+        for data, target in test_loader:
             bs, ncrops, c,h,w = data.size()
             data = data.view(-1,c,h,w)
             data, target = data.to(device), target.to(device)
@@ -181,7 +176,7 @@ def val(epoch):
     test_loss = AverageMeter()
     acc = AverageMeter()
     with torch.no_grad():
-        for data, target, idx in val_loader:
+        for data, target in val_loader:
             bs, ncrops, c,h,w = data.size()
             data = data.view(-1,c,h,w)
             data, target = data.to(device), target.to(device)
