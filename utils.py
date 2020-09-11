@@ -1,6 +1,6 @@
 import shutil
 import torch
-#from tensorboardX import SummaryWriter
+from tensorboardX import SummaryWriter
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -18,13 +18,6 @@ class AverageMeter(object):
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count
-
-def clip_gradient(optimizer, grad_clip):
-    for group in optimizer.param_groups:
-        #print(group['params'])
-        for param in group['params']:
-            param.grad.data.clamp_(-grad_clip, grad_clip)
-
 
 def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
@@ -47,6 +40,11 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     if is_best:
         shutil.copyfile(filename, 'model_best.pth.tar')
 
+def visualize_graph(model, writer, input_size=(1, 3, 32, 32)):
+    dummy_input = torch.rand(input_size)
+    # with SummaryWriter(comment=name) as w:
+    writer.add_graph(model, (dummy_input, ))
+
 def get_parameters_size(model):
     total = 0
     for p in model.parameters():
@@ -55,3 +53,10 @@ def get_parameters_size(model):
             _size *= p.size(i)
         total += _size
     return total
+
+
+def clip_gradient(optimizer, grad_clip):
+    for group in optimizer.param_groups:
+        #print(group['params'])
+        for param in group['params']:
+            param.grad.data.clamp_(-grad_clip, grad_clip)
